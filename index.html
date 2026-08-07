@@ -103,7 +103,8 @@
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;
-  line-height:var(--lead-body);letter-spacing:0;-webkit-font-smoothing:antialiased;padding-bottom:96px}
+  line-height:var(--lead-body);letter-spacing:0;-webkit-font-smoothing:antialiased;padding-bottom:96px;text-align:center}
+.sheet,.basket{text-align:left}
 p{margin:0 0 1em}
 
 /* Primary headline – Grift Black, all caps, tight leading, +10 tracking */
@@ -128,8 +129,9 @@ footer,textarea,input[type=text],.basket .count small,.legend{
 .wrap{max-width:960px;margin:0 auto;padding:0 16px}
 :focus-visible{outline:3px solid var(--butter-deep);outline-offset:2px}
 
-.scoreboard{position:sticky;top:0;z-index:40;background:var(--blue);color:#fff;box-shadow:0 1px 0 rgba(0,0,0,.12)}
-.score-inner{display:flex;align-items:center;gap:16px;padding:10px 16px;max-width:960px;margin:0 auto}
+.sticky-head{position:sticky;top:0;z-index:40}
+.scoreboard{background:var(--blue);color:#fff;box-shadow:0 1px 0 rgba(0,0,0,.12)}
+.score-inner{display:flex;align-items:center;justify-content:center;gap:16px;padding:10px 16px;max-width:960px;margin:0 auto}
 .score-block{display:flex;flex-direction:column;line-height:1.1}
 .score-block .num{font-size:30px;font-variant-numeric:tabular-nums}
 .score-block .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.09em;opacity:.78}
@@ -137,22 +139,23 @@ footer,textarea,input[type=text],.basket .count small,.legend{
 .meter{height:4px;background:rgba(255,255,255,.22)}
 .meter-fill{height:100%;background:var(--butter);width:0;transition:width .9s cubic-bezier(.2,.7,.3,1)}
 
-.hero{padding:40px 0 28px}
+.hero-pin{background:var(--paper);padding:22px 0 18px;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.hero{padding:0 0 28px}
 .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
-h1{font-size:clamp(34px,8.5vw,60px);max-width:15ch}
+h1{font-size:clamp(18px,6.2vw,58px);white-space:nowrap}
 .hero-sub{font-family:var(--sub);font-size:clamp(20px,4.2vw,27px);line-height:var(--lead-sub);
-  color:var(--blue);margin:16px 0 0;max-width:22ch}
-.hero p{max-width:50ch;color:var(--ink-2);margin:18px 0 0;font-size:18px}
-.hero-facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  color:var(--blue);margin:16px auto 0;max-width:22ch}
+.hero p{max-width:50ch;color:var(--ink-2);margin:18px auto 0;font-size:18px}
+.hero-facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;justify-content:center}
 .chip{background:var(--surface);border:1px solid var(--line);border-radius:100px;padding:6px 13px;font-size:13px}
 .chip b{font-weight:400}
 
 section{padding:36px 0}
-.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+.sec-head{display:flex;align-items:baseline;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:6px}
 h2{font-size:clamp(24px,5vw,34px)}
-.sec-sub{color:var(--ink-2);font-size:16px;margin:12px 0 22px;max-width:60ch}
+.sec-sub{color:var(--ink-2);font-size:16px;margin:12px auto 22px;max-width:60ch}
 
-.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-2);margin-bottom:14px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;font-size:13px;color:var(--ink-2);margin-bottom:14px}
 .legend span{display:flex;align-items:center;gap:7px}
 .key{width:14px;height:14px;border-radius:3px;flex:none}
 .key.open{background:var(--blue-50);border:1px solid var(--line)}
@@ -172,7 +175,7 @@ h2{font-size:clamp(24px,5vw,34px)}
 .tile[data-state="sponsored"].mine{background:var(--mint-deep);border-color:var(--mint-deep)}
 @media (prefers-reduced-motion:reduce){.tile,.meter-fill{transition:none}}
 
-.filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;justify-content:center}
 .filter{background:transparent;border:1px solid var(--line);border-radius:100px;padding:7px 15px;font:inherit;font-size:14px;cursor:pointer;color:var(--ink-2)}
 .filter[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
 
@@ -180,7 +183,7 @@ h2{font-size:clamp(24px,5vw,34px)}
 .msg-wall .quote-mark{font-family:var(--headline);font-weight:900;font-size:86px;line-height:.6;opacity:.22;display:block}
 .msg-text{font-size:clamp(19px,3.8vw,26px);margin:10px 0 14px;min-height:2.6em}
 .msg-from{font-size:13px;letter-spacing:.06em;text-transform:uppercase;opacity:.8}
-.msg-dots{display:flex;gap:6px;margin-top:18px}
+.msg-dots{display:flex;gap:6px;margin-top:18px;justify-content:center}
 .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35)}
 .dot.on{background:var(--butter)}
 .fade{animation:fade .5s ease}
@@ -196,7 +199,7 @@ h2{font-size:clamp(24px,5vw,34px)}
 .split{display:flex;height:14px;border-radius:100px;overflow:hidden;margin-top:18px;border:1px solid var(--line)}
 .seg{display:block;border-right:1px solid var(--surface)}
 .seg:last-child{border-right:0}
-.split-key{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:12px;font-family:var(--body);font-size:13px;color:var(--ink-2)}
+.split-key{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 20px;margin-top:12px;font-family:var(--body);font-size:13px;color:var(--ink-2)}
 .split-key span{display:flex;align-items:center;gap:7px}
 .sw{width:12px;height:12px;border-radius:3px;border:1px solid var(--line);flex:none}
 .s1{background:var(--blue)}
@@ -300,19 +303,24 @@ footer p+p{margin-top:14px}
 </head>
 <body>
 
-<div class="scoreboard">
-  <div class="score-inner">
-    <div class="score-block"><span class="num" id="s-kids">0</span><span class="lbl">of 425 places filled</span></div>
-    <div class="score-div"></div>
-    <div class="score-block"><span class="num" id="s-money">A$0</span><span class="lbl">raised of A$21,250</span></div>
+<div class="sticky-head">
+  <div class="scoreboard">
+    <div class="score-inner">
+      <div class="score-block"><span class="num" id="s-kids">0</span><span class="lbl">of 425 places filled</span></div>
+      <div class="score-div"></div>
+      <div class="score-block"><span class="num" id="s-money">A$0</span><span class="lbl">raised of A$21,250</span></div>
+    </div>
+    <div class="meter"><div class="meter-fill" id="meter"></div></div>
   </div>
-  <div class="meter"><div class="meter-fill" id="meter"></div></div>
+
+  <div class="wrap hero-pin">
+    <div class="eyebrow">Sports ground appeal · Sri Lanka</div>
+    <h1>Rebuild Damminna Central</h1>
+    <p class="hero-sub">425 kids. One playing field.</p>
+  </div>
 </div>
 
 <header class="wrap hero">
-  <div class="eyebrow">Sports ground appeal · Sri Lanka</div>
-  <h1>Rebuild Damminna Central</h1>
-  <p class="hero-sub">425 kids. One playing field.</p>
   <p>They already play. Barefoot, on dirt, with a coconut branch for stumps. What they don't have is a ground.</p>
   <p>Behind every square below is one student, picked at random. Fill a square for A$50 and you'll meet them – first name, year, and something they wanted to say to you. Fill all 425 and we start building.</p>
   <div class="hero-facts">
