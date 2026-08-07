@@ -442,7 +442,7 @@ footer p+p{margin-top:14px}
   for (var i = 1; i <= TOTAL; i++){
     var g = gradeFor(i-1);
     students.push({
-      id: i, grade: g, age: g + 5,
+      id: i, grade: g,
       first: NAMES[Math.floor(rnd() * NAMES.length)],
       line: LINES[Math.floor(rnd() * LINES.length)],
       nameConsent: rnd() < 0.88,
@@ -648,7 +648,7 @@ footer p+p{margin-top:14px}
           '<div class="face front"><span class="num">' + s.id + '</span><small>Tap to meet them</small></div>' +
           '<div class="face back">' +
             '<div class="stu-name">' + (known ? esc(s.first) : "A student in Grade " + s.grade) + '</div>' +
-            '<div class="stu-meta">' + (known ? "Grade " + s.grade + " \u00b7 " + s.age + " years old \u00b7 " : "") + 'Place ' + s.id + '</div>' +
+            '<div class="stu-meta">' + (known ? "Grade " + s.grade + " \u00b7 " : "") + 'Place ' + s.id + '</div>' +
             '<div class="stu-msg">&ldquo;' + esc(s.line) + '&rdquo;</div>' +
           '</div>' +
         '</div></div>';
