@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rebuild Damminna Central</title>
+
+<!-- Link preview for shared posts. Point og:image at a wide shot of the ground – never a child's face. -->
+<meta property="og:title" content="Rebuild Damminna Central">
+<meta property="og:description" content="425 kids, one playing field. Fill a place for A$50 and help rebuild the sports ground at Damminna Central.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://example.org/">
+<meta property="og:image" content="https://example.org/share-card.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preload" href="fonts/grift-black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/just-sans-light.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* ---- Brand fonts, self-hosted ---- */
+@font-face{
+  font-family:'Grift Black';
+  src:url('fonts/grift-black.woff2') format('woff2'), url('fonts/grift-black.woff') format('woff');
+  font-weight:900; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:'Juniper';
+  src:url('fonts/juniper.woff2') format('woff2'), url('fonts/juniper.woff') format('woff');
+  font-weight:400; font-style:normal; font-display:swap;
+}
+@font-face{
+  font-family:'JUST Sans Light';
+  src:url('fonts/just-sans-light.woff2') format('woff2'), url('fonts/just-sans-light.woff') format('woff');
+  font-weight:300; font-style:normal; font-display:swap;
+}
+:root{
+  /* Base – sampled from the school blazer (#1F3477) */
+  --blue:#1F3477;          /* primary: blazer body            */
+  --blue-lift:#2A4EA8;     /* lit folds of the sleeve         */
+  --navy:#16234F;          /* deepest fold: headings, footers */
+  --blue-300:#8FA6DA;      /* pastel mid                      */
+  --blue-100:#DCE3F5;      /* pastel wash                     */
+  --blue-50:#EEF2FB;       /* faintest tint: inset panels     */
+
+  /* Neutrals */
+  --surface:#FFFFFF;
+  --paper:#F7F9FD;         /* page ground: white with a breath of blue */
+  --line:#D9E0F0;
+  --ink:#1A1D2B;
+  --ink-2:#5A6180;
+
+  /* Pastel accents */
+  --butter:#F7D488;        /* selection, progress meter */
+  --butter-deep:#E0A83C;
+  --mint:#A9D9C8;
+  --mint-deep:#2A7361;     /* your own squares, message wall */
+  --blush:#F4BCC0;
+  --sage:#CFE3B8;
+  --mint-50:#E7F2EE;       /* notice panel tint */
+  --butter-50:#FDF3DC;     /* notice panel tint */
+
+  /* Gallery washes – derived from the pastels, kept as tokens so no
+     component ever holds a raw hex. Replace wholesale when real media lands. */
+  --wash-1:linear-gradient(150deg,#A9D9C8,#79C0A9);
+  --wash-2:linear-gradient(150deg,#C6D2EF,#8FA6DA);
+  --wash-3:linear-gradient(150deg,#F7D488,#EDBC5E);
+  --wash-4:linear-gradient(150deg,#B7C8EC,#7E9AD8);
+  --wash-5:linear-gradient(150deg,#F4BCC0,#E49AA3);
+  --wash-6:linear-gradient(150deg,#CFE3B8,#AACE8B);
+
+  /* ---- Tints: 80% / 40% / 20% colour strength, remainder white ----
+     RESTRICTED. Infographics, tables, buttons, graphs and highlights only.
+     Never for page chrome, body text, or interface surfaces – those use the
+     base palette above. See CLAUDE.md for the text-on-tint rules. */
+  --tint-blue-80:#4C5D92;        --tint-blue-40:#A5AEC9;        --tint-blue-20:#D2D6E4;
+  --tint-blue-lift-80:#5571B9;   --tint-blue-lift-40:#AAB8DC;   --tint-blue-lift-20:#D4DCEE;
+  --tint-navy-80:#454F72;        --tint-navy-40:#A2A7B9;        --tint-navy-20:#D0D3DC;
+  --tint-butter-80:#F9DDA0;      --tint-butter-40:#FCEECF;      --tint-butter-20:#FDF6E7;
+  --tint-butter-deep-80:#E6B963; --tint-butter-deep-40:#F3DCB1; --tint-butter-deep-20:#F9EED8;
+  --tint-mint-80:#BAE1D3;        --tint-mint-40:#DDF0E9;        --tint-mint-20:#EEF7F4;
+  --tint-mint-deep-80:#558F81;   --tint-mint-deep-40:#AAC7C0;   --tint-mint-deep-20:#D4E3DF;
+  --tint-blush-80:#F6C9CD;       --tint-blush-40:#FBE4E6;       --tint-blush-20:#FDF2F2;
+  --tint-sage-80:#D9E9C6;        --tint-sage-40:#ECF4E3;        --tint-sage-20:#F5F9F1;
+  --tint-ink-80:#484A55;         --tint-ink-40:#A3A5AA;         --tint-ink-20:#D1D2D5;
+
+  /* Third-party brand marks. Exempt from the palette – these are Facebook's
+     and Instagram's colours and must not be restyled to match ours. */
+  --fb:#1877F2;
+  --ig:linear-gradient(90deg,#833AB4,#E1306C,#F77737);
+
+  --radius:4px; --sheet-radius:16px;
+  /* Typography – see BRAND.md. Fallbacks matter: no brand font contains a
+     heart or tick, and Juniper has no middot, so each stack ends in a system face. */
+  --headline:'Grift Black',Impact,'Arial Black',system-ui,sans-serif;  /* ALL CAPS only, weight 900 */
+  --sub:'Juniper','Helvetica Neue',Arial,sans-serif;
+  --body:'JUST Sans Light',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+
+  /* Leading and tracking from the brand guide */
+  --lead-headline:0.85;   /* 80–90% */
+  --lead-sub:1.2;         /* 120%   */
+  --lead-body:1.2;        /* 120%   */
+  --track-headline:0.01em;/* +10    */
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;
+  line-height:var(--lead-body);letter-spacing:0;-webkit-font-smoothing:antialiased;padding-bottom:96px}
+p{margin:0 0 1em}
+
+/* Primary headline – Grift Black, all caps, tight leading, +10 tracking */
+h1,h2,.sheet h3,.thanks-head h3{
+  font-family:var(--headline);text-transform:uppercase;font-weight:900;
+  line-height:var(--lead-headline);letter-spacing:var(--track-headline);
+  margin:0;
+}
+.num{font-family:var(--headline);font-weight:900;line-height:0.9;letter-spacing:var(--track-headline);margin:0}
+
+/* Sub-headline, intro and pull quote – Juniper */
+.eyebrow,.hero p,.sec-sub,.sheet .lead,.msg-text,.stu-name,.thanks-head p,
+.share-preview,.chip,.tile,.pill,.basket .count,.btn,.filter,.pay button,.share button{
+  font-family:var(--sub);line-height:var(--lead-sub);letter-spacing:0;
+}
+
+/* Body copy – JUST Sans Light */
+label,.help,.note,.stu-meta,.stu-msg,.msg-from,.media span,.demo-flag,.private-flag,
+footer,textarea,input[type=text],.basket .count small,.legend{
+  font-family:var(--body);line-height:var(--lead-body);letter-spacing:0;
+}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px}
+:focus-visible{outline:3px solid var(--butter-deep);outline-offset:2px}
+
+.scoreboard{position:sticky;top:0;z-index:40;background:var(--blue);color:#fff;box-shadow:0 1px 0 rgba(0,0,0,.12)}
+.score-inner{display:flex;align-items:center;gap:16px;padding:10px 16px;max-width:960px;margin:0 auto}
+.score-block{display:flex;flex-direction:column;line-height:1.1}
+.score-block .num{font-size:30px;font-variant-numeric:tabular-nums}
+.score-block .lbl{font-size:11px;text-transform:uppercase;letter-spacing:.09em;opacity:.78}
+.score-div{width:1px;align-self:stretch;background:rgba(255,255,255,.22)}
+.meter{height:4px;background:rgba(255,255,255,.22)}
+.meter-fill{height:100%;background:var(--butter);width:0;transition:width .9s cubic-bezier(.2,.7,.3,1)}
+
+.hero{padding:40px 0 28px}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
+h1{font-size:clamp(34px,8.5vw,60px);max-width:15ch}
+.hero-sub{font-family:var(--sub);font-size:clamp(20px,4.2vw,27px);line-height:var(--lead-sub);
+  color:var(--blue);margin:16px 0 0;max-width:22ch}
+.hero p{max-width:50ch;color:var(--ink-2);margin:18px 0 0;font-size:18px}
+.hero-facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.chip{background:var(--surface);border:1px solid var(--line);border-radius:100px;padding:6px 13px;font-size:13px}
+.chip b{font-weight:400}
+
+section{padding:36px 0}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+h2{font-size:clamp(24px,5vw,34px)}
+.sec-sub{color:var(--ink-2);font-size:16px;margin:12px 0 22px;max-width:60ch}
+
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--ink-2);margin-bottom:14px}
+.legend span{display:flex;align-items:center;gap:7px}
+.key{width:14px;height:14px;border-radius:3px;flex:none}
+.key.open{background:var(--blue-50);border:1px solid var(--line)}
+.key.pick{background:var(--butter)}
+.key.done{background:var(--blue)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:5px}
+.tile{aspect-ratio:1;border:1px solid var(--line);background:var(--blue-50);border-radius:var(--radius);
+  font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink-2);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;padding:2px;overflow:hidden;
+  transition:transform .12s ease,background .18s ease,color .18s ease,border-color .18s ease}
+.tile:hover{border-color:var(--blue);color:var(--blue)}
+.tile[data-state="picked"]{background:var(--butter);border-color:var(--butter);color:var(--navy);transform:scale(1.06)}
+.tile[data-state="sponsored"]{background:var(--blue);border-color:var(--blue);color:#fff;
+  font-size:10.5px;line-height:1.1;text-align:center;word-break:break-word;hyphens:auto}
+.tile[data-state="sponsored"]:hover{transform:none;color:#fff}
+.tile[data-state="sponsored"].mine{background:var(--mint-deep);border-color:var(--mint-deep)}
+@media (prefers-reduced-motion:reduce){.tile,.meter-fill{transition:none}}
+
+.filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.filter{background:transparent;border:1px solid var(--line);border-radius:100px;padding:7px 15px;font:inherit;font-size:14px;cursor:pointer;color:var(--ink-2)}
+.filter[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+
+.msg-wall{background:var(--mint-deep);color:#fff;border-radius:8px;padding:28px 22px;position:relative;overflow:hidden;min-height:150px}
+.msg-wall .quote-mark{font-family:var(--headline);font-weight:900;font-size:86px;line-height:.6;opacity:.22;display:block}
+.msg-text{font-size:clamp(19px,3.8vw,26px);margin:10px 0 14px;min-height:2.6em}
+.msg-from{font-size:13px;letter-spacing:.06em;text-transform:uppercase;opacity:.8}
+.msg-dots{display:flex;gap:6px;margin-top:18px}
+.dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.35)}
+.dot.on{background:var(--butter)}
+.fade{animation:fade .5s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.buys{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:2px;background:var(--line);
+  border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.buy{background:var(--surface);padding:18px 16px;display:flex;flex-direction:column;gap:6px}
+.buy-n{font-family:var(--headline);font-weight:900;font-size:24px;line-height:.9;letter-spacing:var(--track-headline);color:var(--blue)}
+.buy-l{font-family:var(--body);font-size:13.5px;line-height:var(--lead-body);color:var(--ink-2)}
+
+/* Budget infographic – the one place tints are allowed */
+.split{display:flex;height:14px;border-radius:100px;overflow:hidden;margin-top:18px;border:1px solid var(--line)}
+.seg{display:block;border-right:1px solid var(--surface)}
+.seg:last-child{border-right:0}
+.split-key{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:12px;font-family:var(--body);font-size:13px;color:var(--ink-2)}
+.split-key span{display:flex;align-items:center;gap:7px}
+.sw{width:12px;height:12px;border-radius:3px;border:1px solid var(--line);flex:none}
+.s1{background:var(--blue)}
+.s2{background:var(--tint-blue-80)}
+.s3{background:var(--tint-blue-40)}
+.s4{background:var(--tint-blue-20)}
+
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.media{aspect-ratio:4/3;border-radius:6px;position:relative;overflow:hidden;background:var(--surface);
+  border:1px solid var(--line);display:flex;align-items:flex-end;padding:14px;cursor:pointer}
+.media::before{content:"";position:absolute;inset:0;opacity:.9}
+.m1::before{background:var(--wash-1)}
+.m2::before{background:var(--wash-2)}
+.m3::before{background:var(--wash-3)}
+.m4::before{background:var(--wash-4)}
+.m5::before{background:var(--wash-5)}
+.m6::before{background:var(--wash-6)}
+.media span{position:relative;color:var(--navy);font-size:14px;text-shadow:0 1px 10px rgba(255,255,255,.7)}
+.play{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.94);
+  display:flex;align-items:center;justify-content:center;color:var(--navy);font-size:12px}
+
+.basket{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--navy);color:#fff;
+  transform:translateY(110%);transition:transform .28s cubic-bezier(.2,.7,.3,1);padding:12px 16px calc(12px + env(safe-area-inset-bottom))}
+.basket.show{transform:none}
+.basket-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:14px}
+.basket .count{font-size:15px;flex:1}
+.basket .count small{display:block;font-size:12px;opacity:.65}
+.btn{font:inherit;border:0;border-radius:100px;padding:13px 24px;cursor:pointer;background:var(--butter);color:var(--navy);font-size:15px}
+.btn:active{transform:scale(.98)}
+.btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35);padding:12px 18px}
+
+.scrim{position:fixed;inset:0;background:rgba(20,20,22,.55);z-index:60;opacity:0;pointer-events:none;transition:opacity .25s}
+.scrim.show{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--surface);
+  border-radius:var(--sheet-radius) var(--sheet-radius) 0 0;max-height:92vh;overflow-y:auto;
+  transform:translateY(100%);transition:transform .3s cubic-bezier(.2,.7,.3,1);
+  padding:8px 20px calc(24px + env(safe-area-inset-bottom))}
+.sheet.show{transform:none}
+@media(min-width:720px){.sheet{max-width:540px;margin:0 auto;border-radius:var(--sheet-radius)}}
+.handle{width:38px;height:4px;border-radius:4px;background:var(--line);margin:8px auto 18px}
+.sheet h3{font-size:23px;margin-bottom:8px}
+.sheet .lead{color:var(--ink-2);font-size:14px;margin:0 0 20px}
+.pill-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+.pill{background:var(--blue-50);border-radius:100px;padding:5px 12px;font-size:13px}
+label{display:block;font-size:13.5px;letter-spacing:.02em;text-transform:uppercase;margin:0 0 7px;color:var(--ink-2)}
+textarea,input[type=text]{width:100%;font:inherit;font-size:16px;padding:12px;border:1px solid var(--line);
+  border-radius:var(--radius);background:var(--surface);color:var(--ink);resize:vertical}
+textarea:focus,input:focus{border-color:var(--blue);outline:none;box-shadow:0 0 0 3px rgba(31,52,119,.14)}
+.help{font-size:12.5px;color:var(--ink-2);margin:6px 0 18px}
+.consent{display:flex;gap:11px;align-items:flex-start;background:var(--blue-50);padding:13px;border-radius:6px;margin:4px 0 18px}
+.consent input{margin:2px 0 0;width:19px;height:19px;flex:none;accent-color:var(--blue)}
+.consent label{font-size:14px;margin:0;cursor:pointer}
+.consent .help{margin:4px 0 0}
+.pay{display:flex;flex-direction:column;gap:9px;margin-top:6px}
+.pay button{font:inherit;font-size:15px;padding:14px;border-radius:6px;border:1px solid var(--navy);
+  background:var(--navy);color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px}
+.pay button.gpay{background:#fff;color:var(--ink)}
+.pay button.card{background:var(--blue);border-color:var(--blue)}
+.total{display:flex;justify-content:space-between;align-items:baseline;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:4px 0 18px}
+.total .num{font-size:28px}
+.note{font-size:12px;color:var(--ink-2);margin-top:16px;line-height:1.5}
+.demo-flag{background:var(--butter-50);border-left:3px solid var(--butter);padding:10px 12px;font-size:12.5px;border-radius:0 4px 4px 0;margin-bottom:18px}
+.private-flag{background:var(--mint-50);border-left:3px solid var(--mint-deep);padding:10px 12px;font-size:12.5px;border-radius:0 4px 4px 0;margin:0 0 18px}
+
+.thanks-head{text-align:center;padding:6px 0 20px}
+.thanks-head .done-mark{width:56px;height:56px;border-radius:50%;background:var(--mint-deep);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 16px}
+.thanks-head h3{font-size:27px;margin-bottom:12px}
+.thanks-head p{color:var(--ink-2);font-size:15px;margin:0 auto;max-width:38ch}
+
+.cards{display:flex;flex-direction:column;gap:12px;margin:22px 0}
+.flip{perspective:1000px;height:138px;cursor:pointer}
+.flip-inner{position:relative;width:100%;height:100%;transition:transform .75s cubic-bezier(.4,.1,.2,1);transform-style:preserve-3d}
+.flip.revealed .flip-inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border-radius:8px;padding:16px;display:flex;flex-direction:column;justify-content:center}
+.face.back{transform:rotateY(180deg);background:var(--surface);border:1px solid var(--line)}
+.face.front{background:var(--blue);color:#fff;align-items:center;justify-content:center;text-align:center}
+.face.front .num{font-size:34px}
+.face.front small{font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.8;margin-top:4px}
+.stu-name{font-size:21px;color:var(--blue)}
+.stu-meta{font-size:13px;color:var(--ink-2);margin:2px 0 9px}
+.stu-msg{font-size:14.5px;line-height:1.45;font-style:italic}
+@media (prefers-reduced-motion:reduce){
+  .flip-inner{transition:none}
+  .flip.revealed .face.front{display:none}
+}
+
+.share{display:flex;flex-direction:column;gap:9px;margin-top:6px}
+.share button{font:inherit;font-size:15px;padding:13px;border-radius:6px;cursor:pointer;
+  border:1px solid var(--line);background:var(--surface);color:var(--ink);
+  display:flex;align-items:center;justify-content:center;gap:9px}
+.share button.fb{background:var(--fb);border-color:var(--fb);color:#fff}
+.share button.ig{background:var(--ig);border:0;color:#fff}
+.share-preview{background:var(--blue-50);border-radius:6px;padding:12px;font-size:13.5px;color:var(--ink-2);margin-bottom:14px;line-height:1.5}
+
+footer{padding:40px 0;border-top:1px solid var(--line);margin-top:20px;font-size:13px;color:var(--ink-2)}
+footer strong{color:var(--ink)}
+footer p+p{margin-top:14px}
+</style>
+</head>
+<body>
+
+<div class="scoreboard">
+  <div class="score-inner">
+    <div class="score-block"><span class="num" id="s-kids">0</span><span class="lbl">of 425 places filled</span></div>
+    <div class="score-div"></div>
+    <div class="score-block"><span class="num" id="s-money">A$0</span><span class="lbl">raised of A$21,250</span></div>
+  </div>
+  <div class="meter"><div class="meter-fill" id="meter"></div></div>
+</div>
+
+<header class="wrap hero">
+  <div class="eyebrow">Sports ground appeal · Sri Lanka</div>
+  <h1>Rebuild Damminna Central</h1>
+  <p class="hero-sub">425 kids. One playing field.</p>
+  <p>They already play. Barefoot, on dirt, with a coconut branch for stumps. What they don't have is a ground.</p>
+  <p>Behind every square below is one student, picked at random. Fill a square for A$50 and you'll meet them – first name, year, and something they wanted to say to you. Fill all 425 and we start building.</p>
+  <div class="hero-facts">
+    <span class="chip"><b>A$50</b> per place</span>
+    <span class="chip"><b>425</b> students, Grades 1–11</span>
+    <span class="chip">Every place funds the same ground</span>
+  </div>
+</header>
+
+<section class="wrap" id="what">
+  <div class="sec-head"><h2>What A$50 buys</h2></div>
+  <p class="sec-sub">Placeholder figures – replace with the costed quote from the school before launch. Every line here should be something you can show a receipt for.</p>
+  <div class="buys">
+    <div class="buy"><span class="buy-n">A$8,400</span><span class="buy-l">Levelling and draining the ground, so it isn't unplayable for four months a year</span></div>
+    <div class="buy"><span class="buy-n">A$6,100</span><span class="buy-l">Netball and volleyball courts, posts and nets</span></div>
+    <div class="buy"><span class="buy-n">A$4,250</span><span class="buy-l">Cricket gear, footballs, athletics equipment and a store to keep it dry</span></div>
+    <div class="buy"><span class="buy-n">A$2,500</span><span class="buy-l">Boots and kit for students who don't have them</span></div>
+  </div>
+  <div class="split" role="img" aria-label="Budget split: ground works 40 percent, courts 29 percent, equipment 20 percent, kit 12 percent of A$21,250">
+    <span class="seg s1" style="flex:8400"></span>
+    <span class="seg s2" style="flex:6100"></span>
+    <span class="seg s3" style="flex:4250"></span>
+    <span class="seg s4" style="flex:2500"></span>
+  </div>
+  <div class="split-key">
+    <span><i class="sw s1"></i>Ground works</span>
+    <span><i class="sw s2"></i>Courts</span>
+    <span><i class="sw s3"></i>Equipment</span>
+    <span><i class="sw s4"></i>Kit</span>
+  </div>
+  <p class="sec-sub" style="margin-top:20px">Money goes to the school's development society account, two signatures on every transfer. We publish the receipts as each line is paid.</p>
+</section>
+
+<section class="wrap" id="grid-section">
+  <div class="sec-head"><h2>Fill a place</h2></div>
+  <p class="sec-sub">Squares are numbered, not named. Each one holds a student picked at random, and you'll meet them the moment your donation goes through. Filled squares show the donor's first name, where they've agreed to it. We don't put children's names on a public page.</p>
+
+  <div class="filters">
+    <button class="filter" aria-pressed="true" data-filter="all">All 425</button>
+    <button class="filter" aria-pressed="false" data-filter="open">Still open</button>
+    <button class="filter" aria-pressed="false" data-filter="sponsored">Already filled</button>
+  </div>
+
+  <div class="legend">
+    <span><i class="key open"></i>Open</span>
+    <span><i class="key pick"></i>Your pick</span>
+    <span><i class="key done"></i>Filled</span>
+  </div>
+
+  <div class="grid" id="grid" role="group" aria-label="425 places"></div>
+</section>
+
+<section class="wrap">
+  <div class="sec-head"><h2>Messages from donors</h2></div>
+  <p class="sec-sub">Read out at Friday assembly, then pinned up in the hall. The principal reads every one before it goes on the wall.</p>
+  <div class="msg-wall">
+    <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+    <p class="msg-text" id="msg-text" aria-live="polite"></p>
+    <div class="msg-from" id="msg-from"></div>
+    <div class="msg-dots" id="msg-dots"></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="sec-head"><h2>The ground as it is now</h2></div>
+  <p class="sec-sub">Replace these blocks with your own photos and video. Wide and group shots only – the dirt, the improvised stumps, the kids playing on it anyway.</p>
+  <div class="gallery">
+    <div class="media m1" tabindex="0"><span>The field after monsoon rain</span></div>
+    <div class="media m2" tabindex="0"><div class="play">▶</div><span>Video · Cricket practice, 6:30am</span></div>
+    <div class="media m3" tabindex="0"><span>The equipment store</span></div>
+    <div class="media m4" tabindex="0"><div class="play">▶</div><span>Video · Message from the principal</span></div>
+    <div class="media m5" tabindex="0"><span>Inter-house athletics day</span></div>
+    <div class="media m6" tabindex="0"><span>Where the courts will go</span></div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <p><strong>Demonstration build.</strong> Payments are simulated and no data leaves this page. Student names and messages are invented sample data.</p>
+  <p>Run by an ACNC-registered charity. Donations over $2 are tax deductible in Australia. Funds go to the school's development society account against the published budget above, two signatures on every transfer.</p>
+  <p><strong>Child protection.</strong> We don't publish students' surnames, photographs, contact details or villages. No donor gets a way to contact a child. First names go to the sponsor only, and only where a parent or guardian has signed a consent form.</p>
+</footer>
+
+<div class="basket" id="basket">
+  <div class="basket-inner">
+    <div class="count"><span id="b-count">0 places</span><small id="b-list">Tap squares to add</small></div>
+    <button class="btn btn-ghost" id="b-clear">Clear</button>
+    <button class="btn" id="b-next">Continue</button>
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+  <div class="handle"></div>
+  <div id="sheet-body"></div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var TOTAL = 425, PRICE = 50;
+  var SITE = "https://example.org/";
+  var students = [], picked = new Set();
+
+  var seed = 20260807;
+  function rnd(){ seed = (seed * 1103515245 + 12345) % 2147483648; return seed / 2147483648; }
+
+  /* Sample student data. Replace with consent-checked records from the school. */
+  var NAMES = ["Nimali","Sachin","Tharushi","Dinuka","Amaya","Kavindu","Sanduni","Ravindu","Hasini","Chamod",
+               "Ishara","Nuwan","Thilini","Pasindu","Sewwandi","Janith","Oshadi","Malith","Rashmi","Dilan",
+               "Anjali","Kasun","Vithusha","Arun","Nethmi","Sahan","Piumi","Tharindu","Lakshmi","Mohan"];
+  var LINES = [
+    "I like running. One day I want to run in a real race.",
+    "Cricket is my favourite. I keep wicket for my class.",
+    "We play netball on the sand. It is hard when it rains.",
+    "I want to learn high jump but we have no mat.",
+    "My brother and I race home from school every day.",
+    "I am the fastest girl in Grade 5. Ask anyone.",
+    "Thank you for helping us. I hope you come and watch us play.",
+    "I want to be a teacher and also a cricketer.",
+    "We use a coconut branch for the stumps.",
+    "Football is best. I play in bare feet."
+  ];
+
+  function gradeFor(i){ return Math.min(11, Math.floor(i / 39) + 1); }
+
+  for (var i = 1; i <= TOTAL; i++){
+    var g = gradeFor(i-1);
+    students.push({
+      id: i, grade: g, age: g + 5,
+      first: NAMES[Math.floor(rnd() * NAMES.length)],
+      line: LINES[Math.floor(rnd() * LINES.length)],
+      nameConsent: rnd() < 0.88,
+      sponsored: rnd() < 0.32,
+      donor: null
+    });
+  }
+  var DEMO_DONORS = ["Sarah","Ruwan","Fernandos","Anon","James","Priya","Anon","Nadeesha","Tom","Anon","Ayesha","Michael"];
+  students.forEach(function(s, idx){
+    if (s.sponsored){ var d = DEMO_DONORS[idx % DEMO_DONORS.length]; s.donor = (d === "Anon") ? null : d; }
+  });
+
+  var messages = [
+    { text:"Play hard, play fair, and look after each other. That is the whole game.", from:"Nadeesha, Melbourne" },
+    { text:"My father learned cricket on a field just like yours. Now it is your turn.", from:"Anonymous donor" },
+    { text:"Kicking a ball around after school was the best part of my childhood. Enjoy every minute.", from:"The Fernando family, Perth" },
+    { text:"From one small school to another, across the ocean. We are cheering for you.", from:"Year 6, Brisbane" },
+    { text:"Run fast. Fall over. Get up. Repeat.", from:"Tom, Adelaide" },
+    { text:"Wishing you a ground worth all the early mornings.", from:"Anonymous donor" },
+    { text:"For my grandmother, who taught in a village school for thirty-one years.", from:"Priyanka, Sydney" }
+  ];
+
+  var $ = function(id){ return document.getElementById(id); };
+  var grid = $("grid"), basket = $("basket"), sheet = $("sheet"), scrim = $("scrim");
+
+  var HEART = '<svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true">' +
+    '<path d="M12 20.5S4.2 15.4 4.2 10.3A4.3 4.3 0 0 1 12 7.4a4.3 4.3 0 0 1 7.8 2.9c0 5.1-7.8 10.2-7.8 10.2z"/></svg>';
+  var TICK = '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" ' +
+    'stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4.5 12.8l5 5.2L19.5 6.5"/></svg>';
+
+  function esc(s){ return String(s).replace(/[&<>"']/g, function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+
+  /* ---------- Grid ---------- */
+  function paintTile(el, s){
+    el.dataset.state = s.sponsored ? "sponsored" : "open";
+    el.innerHTML = s.sponsored
+      ? (s.donor ? esc(s.donor) : HEART)
+      : String(s.id);
+    el.setAttribute("aria-label", s.sponsored
+      ? "Place " + s.id + ", filled" + (s.donor ? " by " + s.donor : " anonymously")
+      : "Place " + s.id + ", open, A$50");
+  }
+  function buildGrid(){
+    var frag = document.createDocumentFragment();
+    students.forEach(function(s){
+      var b = document.createElement("button");
+      b.className = "tile"; b.dataset.id = s.id;
+      paintTile(b, s);
+      frag.appendChild(b);
+    });
+    grid.appendChild(frag);
+  }
+
+  grid.addEventListener("click", function(e){
+    var t = e.target.closest(".tile"); if (!t) return;
+    var id = Number(t.dataset.id), s = students[id-1];
+
+    if (s.sponsored){
+      openSheet(
+        '<h3 id="sheet-title">Place ' + s.id + '</h3>' +
+        '<p class="lead">Filled by ' + (s.donor ? esc(s.donor) : "an anonymous donor") + '.</p>' +
+        '<div class="private-flag">Only the person who filled this square knows who is behind it. We don\u2019t put children\u2019s names on a public page.</div>' +
+        '<div class="pay"><button class="card" data-close>Back to the grid</button></div>');
+      return;
+    }
+    if (picked.has(id)){ picked.delete(id); t.dataset.state = "open"; }
+    else { picked.add(id); t.dataset.state = "picked"; }
+    renderBasket();
+  });
+
+  document.querySelectorAll(".filter").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      document.querySelectorAll(".filter").forEach(function(b){ b.setAttribute("aria-pressed","false"); });
+      btn.setAttribute("aria-pressed","true");
+      var f = btn.dataset.filter;
+      document.querySelectorAll(".tile").forEach(function(t){
+        var st = t.dataset.state;
+        t.style.display = (f === "all" || (f === "sponsored" && st === "sponsored") || (f === "open" && st !== "sponsored")) ? "" : "none";
+      });
+    });
+  });
+
+  /* ---------- Scoreboard ---------- */
+  function stats(){ var n = students.filter(function(s){ return s.sponsored; }).length; return { n:n, money:n*PRICE }; }
+  function renderScore(animate){
+    var st = stats();
+    $("meter").style.width = (st.n / TOTAL * 100) + "%";
+    if (animate){ countTo($("s-kids"), st.n, ""); countTo($("s-money"), st.money, "A$"); }
+    else { $("s-kids").textContent = st.n; $("s-money").textContent = "A$" + st.money.toLocaleString(); }
+  }
+  function countTo(el, target, prefix){
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+      el.textContent = prefix + target.toLocaleString(); return;
+    }
+    var t0 = null, dur = 1100;
+    function step(ts){
+      if (!t0) t0 = ts;
+      var p = Math.min(1, (ts - t0) / dur);
+      el.textContent = prefix + Math.round(target * (1 - Math.pow(1 - p, 3))).toLocaleString();
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  /* ---------- Basket ---------- */
+  function renderBasket(){
+    var n = picked.size;
+    basket.classList.toggle("show", n > 0);
+    $("b-count").textContent = n + (n === 1 ? " place \u2013 A$50" : " places \u2013 A$" + (n*PRICE).toLocaleString());
+    var ids = Array.from(picked).sort(function(a,b){ return a-b; });
+    $("b-list").textContent = ids.length
+      ? "No. " + ids.slice(0,6).join(", ") + (ids.length > 6 ? " +" + (ids.length-6) + " more" : "")
+      : "Tap a square to start";
+  }
+  $("b-clear").addEventListener("click", function(){
+    picked.forEach(function(id){ var t = grid.querySelector('.tile[data-id="'+id+'"]'); if (t) t.dataset.state = "open"; });
+    picked.clear(); renderBasket();
+  });
+
+  /* ---------- Sheet ---------- */
+  var lastFocus = null;
+  function openSheet(html){
+    if (!sheet.classList.contains("show")) lastFocus = document.activeElement;
+    $("sheet-body").innerHTML = html;
+    sheet.classList.add("show"); scrim.classList.add("show");
+    document.body.style.overflow = "hidden";
+    sheet.scrollTop = 0;
+    var f = sheet.querySelector("textarea, input, button"); if (f) f.focus();
+  }
+  function closeSheet(){
+    sheet.classList.remove("show"); scrim.classList.remove("show");
+    document.body.style.overflow = "";
+    if (lastFocus) lastFocus.focus();
+  }
+  scrim.addEventListener("click", closeSheet);
+  document.addEventListener("keydown", function(e){ if (e.key === "Escape" && sheet.classList.contains("show")) closeSheet(); });
+
+  /* ---------- Checkout ---------- */
+  $("b-next").addEventListener("click", function(){
+    var ids = Array.from(picked).sort(function(a,b){ return a-b; });
+    var total = ids.length * PRICE;
+    openSheet(
+      '<h3 id="sheet-title">Fill ' + ids.length + (ids.length === 1 ? " place" : " places") + '</h3>' +
+      '<p class="lead">Squares you\'ve picked:</p>' +
+      '<div class="pill-list">' + ids.map(function(i){ return '<span class="pill">' + i + '</span>'; }).join("") + '</div>' +
+      '<div class="total"><span>Total</span><span class="num">A$' + total.toLocaleString() + '</span></div>' +
+
+      '<label for="who">Your first name</label>' +
+      '<input type="text" id="who" maxlength="40" placeholder="Sarah">' +
+      '<p class="help">First name only. We never ask for a surname.</p>' +
+
+      '<div class="consent">' +
+        '<input type="checkbox" id="consent-name">' +
+        '<div><label for="consent-name">Show my first name on the squares I fill</label>' +
+        '<p class="help">Leave it unticked and your squares show a heart instead. Change your mind any time by replying to your receipt.</p></div>' +
+      '</div>' +
+
+      '<label for="msg">Leave a message for the school</label>' +
+      '<textarea id="msg" rows="3" maxlength="280" placeholder="Something you\'d say to a kid about to play their first proper match."></textarea>' +
+      '<p class="help">Up to 280 characters. Messages go to the whole school, not to one child. The principal approves each one before it goes up.</p>' +
+
+      '<div class="demo-flag"><strong>Demo only.</strong> No card details are collected here. In the live site these open Stripe Checkout, with Apple Pay and Google Pay enabled from your Stripe dashboard.</div>' +
+      '<div class="pay">' +
+        '<button data-pay="Apple Pay">Apple Pay</button>' +
+        '<button class="gpay" data-pay="Google Pay">Google Pay</button>' +
+        '<button class="card" data-pay="card">Pay A$' + total.toLocaleString() + ' by card</button>' +
+      '</div>' +
+      '<p class="note">Tax-deductible receipt by email. A photo from the school when the ground is done.</p>'
+    );
+  });
+
+  /* ---------- Payment then reveal ---------- */
+  sheet.addEventListener("click", function(e){
+    if (e.target.closest("[data-close]")) { closeSheet(); return; }
+    var b = e.target.closest("[data-pay]"); if (!b) return;
+
+    var text = $("msg") ? $("msg").value.trim() : "";
+    var name = ($("who") && $("who").value.trim()) ? $("who").value.trim().slice(0,40) : "";
+    var showName = $("consent-name") ? $("consent-name").checked : false;
+    var ids = Array.from(picked).sort(function(a,b){ return a-b; });
+    var mine = [];
+
+    ids.forEach(function(id){
+      var s = students[id-1];
+      s.sponsored = true;
+      s.donor = (showName && name) ? name : null;
+      mine.push(s);
+      var t = grid.querySelector('.tile[data-id="'+id+'"]');
+      if (t){ paintTile(t, s); t.classList.add("mine"); }
+    });
+    if (text) messages.unshift({ text:text, from:(name || "Anonymous donor") + " (pending approval)" });
+    picked.clear(); renderBasket(); renderScore(false);
+
+    showReveal(mine, name, text);
+  });
+
+  function showReveal(list, name, text){
+    var cards = list.map(function(s){
+      var known = s.nameConsent;
+      return '<div class="flip" data-flip tabindex="0" role="button" aria-label="Reveal the student for place ' + s.id + '">' +
+        '<div class="flip-inner">' +
+          '<div class="face front"><span class="num">' + s.id + '</span><small>Tap to meet them</small></div>' +
+          '<div class="face back">' +
+            '<div class="stu-name">' + (known ? esc(s.first) : "A student in Grade " + s.grade) + '</div>' +
+            '<div class="stu-meta">' + (known ? "Grade " + s.grade + " \u00b7 " + s.age + " years old \u00b7 " : "") + 'Place ' + s.id + '</div>' +
+            '<div class="stu-msg">&ldquo;' + esc(s.line) + '&rdquo;</div>' +
+          '</div>' +
+        '</div></div>';
+    }).join("");
+
+    var shareText = "I just filled " + (list.length === 1 ? "a place" : list.length + " places") +
+      " at Damminna Central in Sri Lanka \u2013 425 kids, one playing field. There are still places open:";
+
+    openSheet(
+      '<div class="thanks-head">' +
+        '<div class="done-mark">' + TICK + '</div>' +
+        '<h3 id="sheet-title">' + (name ? "Thank you, " + esc(name) + "." : "Thank you.") + '</h3>' +
+        '<p>That\'s one more place on a ground that doesn\'t exist yet. Here\'s who you filled it for.</p>' +
+      '</div>' +
+
+      '<div class="cards">' + cards + '</div>' +
+
+      '<div class="private-flag">This one is yours to keep, not to post. Their name stays off the internet \u2013 that\u2019s the deal we made with their parents, so the buttons below leave it out.</div>' +
+
+      (text ? '<div class="demo-flag">Your message is with the principal for approval:<br><em>&ldquo;' + esc(text) + '&rdquo;</em></div>' : '') +
+
+      '<h3 style="margin-bottom:8px">Bring someone with you</h3>' +
+      '<div class="share-preview">' + esc(shareText) + ' <span style="color:var(--blue)">' + SITE + '</span></div>' +
+      '<div class="share">' +
+        '<button class="fb" data-share="facebook">Share on Facebook</button>' +
+        '<button class="ig" data-share="native">Share to Instagram or elsewhere</button>' +
+        '<button data-share="copy">Copy link</button>' +
+      '</div>' +
+      '<p class="note">The link opens the main page. Whoever follows it can fill a place of their own.</p>' +
+      '<div class="pay" style="margin-top:18px"><button class="card" data-close>Back to the grid</button></div>'
+    );
+
+    var flips = sheet.querySelectorAll("[data-flip]");
+    Array.prototype.forEach.call(flips, function(f, i){
+      f.addEventListener("click", function(){ f.classList.toggle("revealed"); });
+      f.addEventListener("keydown", function(ev){
+        if (ev.key === "Enter" || ev.key === " "){ ev.preventDefault(); f.classList.toggle("revealed"); }
+      });
+      setTimeout(function(){ f.classList.add("revealed"); }, 500 + i * 260);
+    });
+
+    Array.prototype.forEach.call(sheet.querySelectorAll("[data-share]"), function(btn){
+      btn.addEventListener("click", function(){ doShare(btn.dataset.share, shareText); });
+    });
+  }
+
+  function doShare(kind, shareText){
+    var url = SITE;
+    if (kind === "facebook"){
+      window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(url),
+                  "_blank", "noopener,noreferrer,width=600,height=520");
+      return;
+    }
+    if (kind === "native" && navigator.share){
+      navigator.share({ title:"Rebuild Damminna Central", text:shareText, url:url }).catch(function(){});
+      return;
+    }
+    var full = shareText + " " + url;
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(full).then(
+        function(){ flash("Copied. Paste it into your post."); },
+        function(){ flash("Copy this: " + full); });
+    } else {
+      flash("Copy this: " + full);
+    }
+  }
+  function flash(msg){
+    var el = document.createElement("div");
+    el.textContent = msg;
+    el.style.cssText = "position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--navy);color:#fff;" +
+      "padding:12px 18px;border-radius:100px;font-size:14px;z-index:90;max-width:90vw;text-align:center";
+    document.body.appendChild(el);
+    setTimeout(function(){ el.remove(); }, 3200);
+  }
+
+  /* ---------- Message rotator ---------- */
+  var mIdx = 0;
+  function showMessage(){
+    var m = messages[mIdx % messages.length], tEl = $("msg-text");
+    tEl.classList.remove("fade"); void tEl.offsetWidth; tEl.classList.add("fade");
+    tEl.textContent = m.text;
+    $("msg-from").textContent = "\u2013 " + m.from;
+    $("msg-dots").innerHTML = messages.slice(0,7).map(function(_, i){
+      return '<span class="dot' + (i === mIdx % 7 ? " on" : "") + '"></span>'; }).join("");
+  }
+
+  buildGrid(); renderScore(true); renderBasket(); showMessage();
+  setInterval(function(){ mIdx = Math.floor(Math.random() * messages.length); showMessage(); }, 5200);
+})();
+</script>
+</body>
+</html>

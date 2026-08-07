@@ -1,0 +1,8 @@
+{
+  "files.eol": "\n",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "editor.rulers": [100],
+  "search.exclude": { "**/fonts": true },
+  "[markdown]": { "editor.wordWrap": "on" }
+}
