@@ -13,14 +13,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      #- run: npm ci && npm run build
-      - run: |
-          # Make your build script executable (if it is a .sh file)
-          chmod +x ./scripts/build.sh
-          # Execute your build script
-          ./scripts/build.sh
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Run build script
+        run: ./scripts/build.sh
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: ${{ secrets.GITHUB_TOKEN }}
-          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_REBUILD_DAMMINNA_CENTRAL }}
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT }}'
+          channelId: live
           projectId: rebuild-damminna-central
