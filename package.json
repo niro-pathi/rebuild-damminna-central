@@ -1,0 +1,21 @@
+{
+  "name": "rebuild-damminna-central",
+  "version": "1.0.0",
+  "description": "Donation site for the school sports ground at Damminna Central, Sri Lanka. 425 students, one square each, A$50 to fill a square. Run by an ACNC-registered Australian charity.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niro-pathi/rebuild-damminna-central.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/niro-pathi/rebuild-damminna-central/issues"
+  },
+  "homepage": "https://github.com/niro-pathi/rebuild-damminna-central#readme"
+}
