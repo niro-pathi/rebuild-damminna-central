@@ -48,7 +48,7 @@ jobs:
       - name: Look for obvious credentials
         run: |
           if grep -rInE '(sk_live_|sk_test_|rk_live_|-----BEGIN [A-Z ]*PRIVATE KEY|"type": *"service_account")' \
-               --exclude-dir=.git --exclude-dir=fonts . ; then
+               --exclude-dir=.git --exclude-dir=.github --exclude-dir=fonts . ; then
             echo "FAIL: credential-shaped string committed"; exit 1
           fi
           echo ok

@@ -522,8 +522,8 @@ gcloud sql instances create rdc-db \
   --enable-point-in-time-recovery
 
 # Secrets. Never in the repo, never in an env file.
-echo -n "sk_live_…" | gcloud secrets create stripe-secret-key --data-file=-
-echo -n "whsec_…"   | gcloud secrets create stripe-webhook-secret --data-file=-
+echo -n "<stripe-secret-key>" | gcloud secrets create stripe-secret-key --data-file=-
+echo -n "<stripe-webhook-secret>" | gcloud secrets create stripe-webhook-secret --data-file=-
 
 # Cloud Run, scaling to zero between donation waves
 gcloud run deploy rdc-api \
