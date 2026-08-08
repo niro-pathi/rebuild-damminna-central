@@ -52,7 +52,7 @@
   --butter:#F7D488;        /* selection, progress meter */
   --butter-deep:#E0A83C;
   --mint:#A9D9C8;
-  --mint-deep:#2A7361;     /* your own squares, message wall */
+  --mint-deep:#2A7361;     /* your own tiles, message wall */
   --blush:#F4BCC0;
   --sage:#CFE3B8;
   --mint-50:#E7F2EE;       /* notice panel tint */
@@ -117,19 +117,20 @@ h1,h2,.sheet h3,.thanks-head h3{
 
 /* Sub-headline, intro and pull quote – Juniper */
 .eyebrow,.hero p,.sec-sub,.sheet .lead,.msg-text,.stu-name,.thanks-head p,
-.share-preview,.chip,.tile,.pill,.basket .count,.btn,.filter,.pay button,.share button{
+.share-preview,.chip,.tile,.pill,.basket .count,.btn,.filter,.btn-back,.pay button,.share button{
   font-family:var(--sub);line-height:var(--lead-sub);letter-spacing:0;
 }
 
 /* Body copy – JUST Sans Light */
-label,.help,.note,.stu-meta,.stu-msg,.msg-from,.media span,.demo-flag,.private-flag,
-footer,textarea,input[type=text],.basket .count small,.legend{
+label,.help,.note,.stu-grade,.stu-msg,.stu-sponsor,.msg-from,.media span,.demo-flag,.private-flag,
+footer,textarea,input[type=text],input[type=email],.basket .count small,.legend{
   font-family:var(--body);line-height:var(--lead-body);letter-spacing:0;
 }
 .wrap{max-width:960px;margin:0 auto;padding:0 16px}
+#grid-section{max-width:1400px}
 :focus-visible{outline:3px solid var(--butter-deep);outline-offset:2px}
 
-.sticky-head{position:sticky;top:0;z-index:40}
+.sticky-head{position:sticky;top:0;z-index:40;background:var(--paper)}
 .scoreboard{background:var(--blue);color:#fff;box-shadow:0 1px 0 rgba(0,0,0,.12)}
 .score-inner{display:flex;align-items:center;justify-content:center;gap:16px;padding:10px 16px;max-width:960px;margin:0 auto}
 .score-block{display:flex;flex-direction:column;line-height:1.1}
@@ -139,13 +140,13 @@ footer,textarea,input[type=text],.basket .count small,.legend{
 .meter{height:4px;background:rgba(255,255,255,.22)}
 .meter-fill{height:100%;background:var(--butter);width:0;transition:width .9s cubic-bezier(.2,.7,.3,1)}
 
-.hero-pin{background:var(--paper);padding:22px 0 18px;box-shadow:0 1px 0 rgba(0,0,0,.06)}
+.hero-pin{background:var(--blue);color:#fff;padding:22px 0 18px}
 .hero{padding:0 0 28px}
 .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:16px}
-h1{font-size:clamp(18px,6.2vw,58px);white-space:nowrap}
+h1{font-size:clamp(18px,6.2vw,58px);white-space:nowrap;color:#fff}
 .hero-sub{font-family:var(--sub);font-size:clamp(20px,4.2vw,27px);line-height:var(--lead-sub);
-  color:var(--blue);margin:16px auto 0;max-width:22ch}
-.hero p{color:var(--ink-2);margin:18px 0 0;font-size:18px}
+  color:#fff;margin:16px auto 0;max-width:22ch}
+.hero p{color:var(--ink-2);margin:10px 0 0;font-size:18px}
 .hero-facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;justify-content:center}
 .chip{background:var(--surface);border:1px solid var(--line);border-radius:100px;padding:6px 13px;font-size:13px}
 .chip b{font-weight:400}
@@ -162,24 +163,28 @@ h2{font-size:clamp(24px,5vw,34px)}
 .key.pick{background:var(--butter)}
 .key.done{background:var(--blue)}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:5px}
-.tile{aspect-ratio:1;border:1px solid var(--line);background:var(--blue-50);border-radius:var(--radius);
-  font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink-2);
-  display:flex;align-items:center;justify-content:center;cursor:pointer;padding:2px;overflow:hidden;
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(116px,1fr));gap:10px;margin-bottom:40px;perspective:800px}
+.tile{position:relative;aspect-ratio:1;border:1px solid var(--line);background:var(--blue-50);border-radius:var(--radius);
+  font-size:26px;font-variant-numeric:tabular-nums;color:var(--ink-2);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;padding:4px;overflow:hidden;
   transition:transform .12s ease,background .18s ease,color .18s ease,border-color .18s ease}
 .tile:hover{border-color:var(--blue);color:var(--blue)}
 .tile[data-state="picked"]{background:var(--butter);border-color:var(--butter);color:var(--navy);transform:scale(1.06)}
 .tile[data-state="sponsored"]{background:var(--blue);border-color:var(--blue);color:#fff;
-  font-size:10.5px;line-height:1.1;text-align:center;word-break:break-word;hyphens:auto}
+  font-size:16px;line-height:1.1;text-align:center;word-break:break-word;hyphens:auto}
 .tile[data-state="sponsored"]:hover{transform:none;color:#fff}
 .tile[data-state="sponsored"].mine{background:var(--mint-deep);border-color:var(--mint-deep)}
+.tile[data-state="open"].nudging{font-size:13px;line-height:1.15;color:var(--blue);border-color:var(--blue)}
 @media (prefers-reduced-motion:reduce){.tile,.meter-fill{transition:none}}
 
+.sticky-filters{position:sticky;top:var(--head-h,0px);z-index:30;background:var(--paper);
+  padding:10px 0 22px;box-shadow:0 1px 0 rgba(0,0,0,.06)}
 .filters{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;justify-content:center}
 .filter{background:transparent;border:1px solid var(--line);border-radius:100px;padding:7px 15px;font:inherit;font-size:14px;cursor:pointer;color:var(--ink-2)}
 .filter[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.btn-back{background:var(--blue);border:1px solid var(--blue);border-radius:100px;padding:7px 15px;font:inherit;font-size:14px;cursor:pointer;color:#fff}
 
-.msg-wall{background:var(--mint-deep);color:#fff;border-radius:8px;padding:28px 22px;position:relative;overflow:hidden;min-height:150px}
+.msg-wall{background:var(--mint-deep);color:#fff;border-radius:8px;padding:28px 22px;position:relative;overflow:hidden;min-height:150px;margin-bottom:40px}
 .msg-wall .quote-mark{font-family:var(--headline);font-weight:900;font-size:86px;line-height:.6;opacity:.22;display:block}
 .msg-text{font-size:clamp(19px,3.8vw,26px);margin:10px 0 14px;min-height:2.6em}
 .msg-from{font-size:13px;letter-spacing:.06em;text-transform:uppercase;opacity:.8}
@@ -245,7 +250,7 @@ h2{font-size:clamp(24px,5vw,34px)}
 .pill-list{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
 .pill{background:var(--blue-50);border-radius:100px;padding:5px 12px;font-size:13px}
 label{display:block;font-size:13.5px;letter-spacing:.02em;text-transform:uppercase;margin:0 0 7px;color:var(--ink-2)}
-textarea,input[type=text]{width:100%;font:inherit;font-size:16px;padding:12px;border:1px solid var(--line);
+textarea,input[type=text],input[type=email]{width:100%;font:inherit;font-size:16px;padding:12px;border:1px solid var(--line);
   border-radius:var(--radius);background:var(--surface);color:var(--ink);resize:vertical}
 textarea:focus,input:focus{border-color:var(--blue);outline:none;box-shadow:0 0 0 3px rgba(31,52,119,.14)}
 .help{font-size:12.5px;color:var(--ink-2);margin:6px 0 18px}
@@ -271,7 +276,7 @@ textarea:focus,input:focus{border-color:var(--blue);outline:none;box-shadow:0 0 
 .thanks-head p{color:var(--ink-2);font-size:15px;margin:0 auto;max-width:38ch}
 
 .cards{display:flex;flex-direction:column;gap:12px;margin:22px 0}
-.flip{perspective:1000px;height:138px;cursor:pointer}
+.flip{perspective:1000px;height:210px;cursor:pointer}
 .flip-inner{position:relative;width:100%;height:100%;transition:transform .75s cubic-bezier(.4,.1,.2,1);transform-style:preserve-3d}
 .flip.revealed .flip-inner{transform:rotateY(180deg)}
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
@@ -281,8 +286,10 @@ textarea:focus,input:focus{border-color:var(--blue);outline:none;box-shadow:0 0 
 .face.front .num{font-size:34px}
 .face.front small{font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.8;margin-top:4px}
 .stu-name{font-size:21px;color:var(--blue)}
-.stu-meta{font-size:13px;color:var(--ink-2);margin:2px 0 9px}
-.stu-msg{font-size:14.5px;line-height:1.45;font-style:italic}
+.stu-grade{font-size:13px;color:var(--ink-2);margin:2px 0 9px}
+.stu-msg{font-size:14.5px;line-height:1.45;font-style:italic;text-align:center}
+.stu-sponsor{font-size:12px;color:var(--ink-2);margin-top:10px;padding-top:8px;border-top:1px solid var(--line)}
+.stu-sponsor .heart-ic{color:var(--blush);vertical-align:middle}
 @media (prefers-reduced-motion:reduce){
   .flip-inner{transition:none}
   .flip.revealed .face.front{display:none}
@@ -304,6 +311,13 @@ footer p+p{margin-top:14px}
 <body>
 
 <div class="sticky-head">
+  <div class="hero-pin">
+    <div class="wrap">
+      <h1>Rebuild Damminna Central</h1>
+      <p class="hero-sub">425 kids. One playing field.</p>
+    </div>
+  </div>
+
   <div class="scoreboard">
     <div class="score-inner">
       <div class="score-block"><span class="num" id="s-kids">0</span><span class="lbl">of 425 places filled</span></div>
@@ -312,25 +326,14 @@ footer p+p{margin-top:14px}
     </div>
     <div class="meter"><div class="meter-fill" id="meter"></div></div>
   </div>
-
-  <div class="wrap hero-pin">
-    <h1>Rebuild Damminna Central</h1>
-    <p class="hero-sub">425 kids. One playing field.</p>
-  </div>
 </div>
 
 <header class="wrap hero">
-  <p>They already play barefoot on dirt with a coconut branch for stumps.</p>
-  <p> But they deserve a real place to learn and play.</p>
-  <p>Our goal is to rebuild the entire school: modern classrooms equipped with smart boards and digital learning tools, and proper sports grounds for cricket and rugby.</p>
-  <p>Behind every square below is one student, picked at random.</p>
-  <p>Fill a square for A$50 and you'll meet them, and something they wanted to say to you.</p>
-  <p> Fill all 425 and we start building</p>
-  <div class="hero-facts">
-    <span class="chip"><b>A$50</b> per place</span>
-    <span class="chip"><b>425</b> students, Grades 1–11</span>
-    <span class="chip">Every place funds the same ground</span>
-  </div>
+  <p>They already play barefoot on dirt, with a coconut branch for stumps.</p>
+  <p>What they don't have is a school built for learning, proper classroomsand real ground for sport activities.</p>
+  <p>Work has already started. Every tile you fill keeps it going.</p>
+  <p>Behind every tile below is one student. You don't pick the child, the tile does that. </p>
+  <p>Fill one for A$50 and you'll meet them, and read something they wanted to say to you.</p>
 </header>
 
 <section class="wrap" id="what">
@@ -353,23 +356,26 @@ footer p+p{margin-top:14px}
     <span><i class="sw s3"></i>Equipment</span>
     <span><i class="sw s4"></i>Kit</span>
   </div>
-  <p class="sec-sub" style="margin-top:20px">Money goes to the school's development society account, two signatures on every transfer. We publish the receipts as each line is paid.</p>
 </section>
 
 <section class="wrap" id="grid-section">
-  <div class="sec-head"><h2>Fill a place</h2></div>
-  <p class="sec-sub">Squares are numbered, not named. Each one holds a student picked at random, and you'll meet them the moment your donation goes through. Filled squares show the donor's first name, where they've agreed to it. We don't put children's names on a public page.</p>
+  <p></p>
+  <div class="sticky-filters" id="sticky-filters">
+    <div class="sec-head"><h2>Fill a place</h2></div>
+    <p class="sec-sub">Every tile is a number, not a name. You don't pick the child, the tile does that.
+      Fill one and you'll meet them the moment your payment goes through.</p>
 
-  <div class="filters">
-    <button class="filter" aria-pressed="true" data-filter="all">All 425</button>
-    <button class="filter" aria-pressed="false" data-filter="open">Still open</button>
-    <button class="filter" aria-pressed="false" data-filter="sponsored">Already filled</button>
-  </div>
+    <div class="filters">
+      <button class="filter" aria-pressed="true" data-filter="all">All 425</button>
+      <button class="filter" aria-pressed="false" data-filter="open">Still open</button>
+      <button class="filter" aria-pressed="false" data-filter="sponsored">Already filled</button>
+    </div>
 
-  <div class="legend">
-    <span><i class="key open"></i>Open</span>
-    <span><i class="key pick"></i>Your pick</span>
-    <span><i class="key done"></i>Filled</span>
+    <div class="legend">
+      <span><i class="key open"></i>Open</span>
+      <span><i class="key pick"></i>Your pick</span>
+      <span><i class="key done"></i>Filled</span>
+    </div>
   </div>
 
   <div class="grid" id="grid" role="group" aria-label="425 places"></div>
@@ -387,8 +393,7 @@ footer p+p{margin-top:14px}
 </section>
 
 <section class="wrap">
-  <div class="sec-head"><h2>The ground as it is now</h2></div>
-  <p class="sec-sub">Replace these blocks with your own photos and video. Wide and group shots only – the dirt, the improvised stumps, the kids playing on it anyway.</p>
+  <div class="sec-head"><h2>The school as it is now</h2></div>
   <div class="gallery">
     <div class="media m1" tabindex="0"><span>The field after monsoon rain</span></div>
     <div class="media m2" tabindex="0"><div class="play">▶</div><span>Video · Cricket practice, 6:30am</span></div>
@@ -407,7 +412,7 @@ footer p+p{margin-top:14px}
 
 <div class="basket" id="basket">
   <div class="basket-inner">
-    <div class="count"><span id="b-count">0 places</span><small id="b-list">Tap squares to add</small></div>
+    <div class="count"><span id="b-count">0 places</span><small id="b-list">Tap tiles to add</small></div>
     <button class="btn btn-ghost" id="b-clear">Clear</button>
     <button class="btn" id="b-next">Continue</button>
   </div>
@@ -515,13 +520,51 @@ footer p+p{margin-top:14px}
       openSheet(
         '<h3 id="sheet-title">Place ' + s.id + '</h3>' +
         '<p class="lead">Filled by ' + (s.donor ? esc(s.donor) : "an anonymous donor") + '.</p>' +
-        '<div class="private-flag">Only the person who filled this square knows who is behind it. We don\u2019t put children\u2019s names on a public page.</div>' +
+        '<div class="private-flag">Only the person who filled this tile knows who is behind it. We don\u2019t put children\u2019s names on a public page.</div>' +
         '<div class="pay"><button class="card" data-close>Back to the grid</button></div>');
       return;
     }
     if (picked.has(id)){ picked.delete(id); t.dataset.state = "open"; }
     else { picked.add(id); t.dataset.state = "picked"; }
     renderBasket();
+  });
+
+  /* ---------- Open-tile nudge: quick flip to a prompt, then back ---------- */
+  function flipTileText(el, newText, mid){
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+      el.textContent = newText; if (mid) mid();
+      return;
+    }
+    el.style.transition = "transform .15s ease";
+    el.style.transform = "rotateY(90deg)";
+    setTimeout(function(){
+      el.textContent = newText;
+      if (mid) mid();
+      el.style.transition = "none";
+      el.style.transform = "rotateY(-90deg)";
+      void el.offsetWidth;
+      el.style.transition = "transform .15s ease";
+      el.style.transform = "rotateY(0deg)";
+    }, 150);
+  }
+  function nudgeTile(t){
+    if (t.dataset.flipping || t.dataset.state !== "open") return;
+    t.dataset.flipping = "1";
+    var original = t.textContent;
+    flipTileText(t, "Meet them", function(){ t.classList.add("nudging"); });
+    setTimeout(function(){
+      flipTileText(t, original, function(){ t.classList.remove("nudging"); });
+      setTimeout(function(){
+        t.style.transition = ""; t.style.transform = "";
+        delete t.dataset.flipping;
+      }, 300);
+    }, 500);
+  }
+  grid.addEventListener("mouseover", function(e){
+    var t = e.target.closest('.tile[data-state="open"]'); if (t) nudgeTile(t);
+  });
+  grid.addEventListener("focusin", function(e){
+    var t = e.target.closest('.tile[data-state="open"]'); if (t) nudgeTile(t);
   });
 
   document.querySelectorAll(".filter").forEach(function(btn){
@@ -562,11 +605,11 @@ footer p+p{margin-top:14px}
   function renderBasket(){
     var n = picked.size;
     basket.classList.toggle("show", n > 0);
-    $("b-count").textContent = n + (n === 1 ? " place \u2013 A$50" : " places \u2013 A$" + (n*PRICE).toLocaleString());
+    $("b-count").textContent = n + (n === 1 ? " place: A$50" : " places: A$" + (n*PRICE).toLocaleString());
     var ids = Array.from(picked).sort(function(a,b){ return a-b; });
     $("b-list").textContent = ids.length
       ? "No. " + ids.slice(0,6).join(", ") + (ids.length > 6 ? " +" + (ids.length-6) + " more" : "")
-      : "Tap a square to start";
+      : "Tap a tile to start";
   }
   $("b-clear").addEventListener("click", function(){
     picked.forEach(function(id){ var t = grid.querySelector('.tile[data-id="'+id+'"]'); if (t) t.dataset.state = "open"; });
@@ -581,7 +624,8 @@ footer p+p{margin-top:14px}
     sheet.classList.add("show"); scrim.classList.add("show");
     document.body.style.overflow = "hidden";
     sheet.scrollTop = 0;
-    var f = sheet.querySelector("textarea, input, button"); if (f) f.focus();
+    var f = sheet.querySelector("textarea, input, button:not([data-close])") || sheet.querySelector("textarea, input, button");
+    if (f) f.focus();
   }
   function closeSheet(){
     sheet.classList.remove("show"); scrim.classList.remove("show");
@@ -596,8 +640,9 @@ footer p+p{margin-top:14px}
     var ids = Array.from(picked).sort(function(a,b){ return a-b; });
     var total = ids.length * PRICE;
     openSheet(
+      '<button class="btn-back" data-close type="button" style="margin-bottom:16px">Back</button>' +
       '<h3 id="sheet-title">Fill ' + ids.length + (ids.length === 1 ? " place" : " places") + '</h3>' +
-      '<p class="lead">Squares you\'ve picked:</p>' +
+      '<p class="lead">Tiles you\'ve picked:</p>' +
       '<div class="pill-list">' + ids.map(function(i){ return '<span class="pill">' + i + '</span>'; }).join("") + '</div>' +
       '<div class="total"><span>Total</span><span class="num">A$' + total.toLocaleString() + '</span></div>' +
 
@@ -605,10 +650,20 @@ footer p+p{margin-top:14px}
       '<input type="text" id="who" maxlength="40" placeholder="Sarah">' +
       '<p class="help">First name only. We never ask for a surname.</p>' +
 
+      '<label for="email">Your email</label>' +
+      '<input type="email" id="email" maxlength="120" placeholder="sarah@email.com" required>' +
+      '<p class="help">For your tax-deductible receipt.</p>' +
+
       '<div class="consent">' +
         '<input type="checkbox" id="consent-name">' +
-        '<div><label for="consent-name">Show my first name on the squares I fill</label>' +
-        '<p class="help">Leave it unticked and your squares show a heart instead. Change your mind any time by replying to your receipt.</p></div>' +
+        '<div><label for="consent-name">Show my first name on the tiles I fill</label>' +
+        '<p class="help">Leave it unticked and your tiles show a heart instead. Change your mind any time by replying to your receipt.</p></div>' +
+      '</div>' +
+
+      '<div class="consent">' +
+        '<input type="checkbox" id="consent-updates">' +
+        '<div><label for="consent-updates">Email me updates on the build</label>' +
+        '<p class="help">Occasional emails as the ground comes together. Unsubscribe any time.</p></div>' +
       '</div>' +
 
       '<label for="msg">Leave a message for the school</label>' +
@@ -630,9 +685,14 @@ footer p+p{margin-top:14px}
     if (e.target.closest("[data-close]")) { closeSheet(); return; }
     var b = e.target.closest("[data-pay]"); if (!b) return;
 
+    var emailField = $("email");
+    if (emailField && !emailField.checkValidity()){ emailField.reportValidity(); return; }
+
     var text = $("msg") ? $("msg").value.trim() : "";
     var name = ($("who") && $("who").value.trim()) ? $("who").value.trim().slice(0,40) : "";
+    var email = $("email") ? $("email").value.trim() : "";
     var showName = $("consent-name") ? $("consent-name").checked : false;
+    var wantsUpdates = $("consent-updates") ? $("consent-updates").checked : false;
     var ids = Array.from(picked).sort(function(a,b){ return a-b; });
     var mine = [];
 
@@ -658,8 +718,9 @@ footer p+p{margin-top:14px}
           '<div class="face front"><span class="num">' + s.id + '</span><small>Tap to meet them</small></div>' +
           '<div class="face back">' +
             '<div class="stu-name">' + (known ? esc(s.first) : "A student in Grade " + s.grade) + '</div>' +
-            '<div class="stu-meta">' + (known ? "Grade " + s.grade + " \u00b7 " : "") + 'Place ' + s.id + '</div>' +
+            '<div class="stu-grade">Grade ' + s.grade + '</div>' +
             '<div class="stu-msg">&ldquo;' + esc(s.line) + '&rdquo;</div>' +
+            '<div class="stu-sponsor">Filled by ' + (s.donor ? esc(s.donor) : '<span class="heart-ic">' + HEART + '</span>') + '</div>' +
           '</div>' +
         '</div></div>';
     }).join("");
@@ -744,6 +805,16 @@ footer p+p{margin-top:14px}
     $("msg-dots").innerHTML = messages.slice(0,7).map(function(_, i){
       return '<span class="dot' + (i === mIdx % 7 ? " on" : "") + '"></span>'; }).join("");
   }
+
+  /* ---------- Sticky offset sync ---------- */
+  var stickyHead = document.querySelector(".sticky-head");
+  function syncHeadHeight(){
+    if (stickyHead) document.documentElement.style.setProperty("--head-h", stickyHead.offsetHeight + "px");
+  }
+  syncHeadHeight();
+  window.addEventListener("resize", syncHeadHeight);
+  window.addEventListener("load", syncHeadHeight);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(syncHeadHeight);
 
   buildGrid(); renderScore(true); renderBasket(); showMessage();
   setInterval(function(){ mIdx = Math.floor(Math.random() * messages.length); showMessage(); }, 5200);
