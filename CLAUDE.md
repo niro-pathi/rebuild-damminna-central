@@ -256,7 +256,9 @@ orders     id, stripe_session_id, amount_cents, donor_first_name,
 
 ## Working in this repo
 
-`CLAUDE.md` loads automatically as project memory. Four project commands live in `.claude/commands/`: `/safeguard-check`, `/brand-check`, `/voice-check`, `/ship-check`. Run `/ship-check` before opening a PR. Setup and the local server are documented in `SETUP.md`.
+`CLAUDE.md` loads automatically as project memory. Four project commands live in `.claude/commands/`: `/safeguard-check`, `/brand-check`, `/voice-check`, `/ship-check`. Run `/ship-check` before opening a PR. Setup and the local server are documented in `SETUP.md`; Google Cloud infrastructure and CI/CD in `DEPLOY.md`.
+
+CI runs `scripts/brand-audit.sh` on every pull request. If you change a brand or copy rule here, update that script too, or the rule is advisory rather than enforced.
 
 ## Conventions
 

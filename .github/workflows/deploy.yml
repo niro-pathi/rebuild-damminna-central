@@ -1,0 +1,84 @@
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write        # required for Workload Identity Federation
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+env:
+  BUCKET: ${{ vars.GCS_BUCKET }}                 # e.g. rdc-site-prod
+  URL_MAP: ${{ vars.URL_MAP }}                   # e.g. rdc-url-map
+  SITE_URL: ${{ vars.SITE_URL }}                 # e.g. https://rebuilddamminna.org/
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Brand audit
+        run: ./scripts/brand-audit.sh
+
+      - name: Set the canonical URL
+        run: |
+          test -n "$SITE_URL" || { echo "SITE_URL variable is not set"; exit 1; }
+          python3 - <<'PY'
+          import os, pathlib
+          site = os.environ["SITE_URL"]
+          p = pathlib.Path("index.html")
+          s = p.read_text().replace("https://example.org/", site)
+          p.write_text(s)
+          print("canonical URL set to", site)
+          PY
+          if grep -n "example.org" index.html; then
+            echo "FAIL: placeholder URL still present"; exit 1
+          fi
+
+      - name: Stage the deployable files
+        run: |
+          mkdir -p dist/fonts
+          cp index.html dist/
+          cp fonts/*.woff2 fonts/*.woff dist/fonts/
+          ls -R dist
+
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ vars.WIF_PROVIDER }}
+          service_account: ${{ vars.DEPLOY_SA }}
+
+      - name: Set up gcloud
+        uses: google-github-actions/setup-gcloud@v2
+
+      # Fonts are content-addressed by name and change rarely: cache hard.
+      - name: Upload fonts
+        run: |
+          gcloud storage rsync dist/fonts "gs://$BUCKET/fonts" \
+            --recursive --delete-unmatched-destination-objects \
+            --cache-control="public, max-age=31536000, immutable"
+
+      # index.html must never be cached, or donors see a stale campaign total.
+      - name: Upload index.html
+        run: |
+          gcloud storage cp dist/index.html "gs://$BUCKET/index.html" \
+            --cache-control="no-cache, max-age=0, must-revalidate" \
+            --content-type="text/html; charset=utf-8"
+
+      - name: Invalidate the CDN
+        run: |
+          gcloud compute url-maps invalidate-cdn-cache "$URL_MAP" \
+            --path="/*" --async
+
+      - name: Summary
+        run: |
+          echo "Deployed ${{ github.sha }} to $SITE_URL" >> $GITHUB_STEP_SUMMARY
